@@ -1,0 +1,30 @@
+Research Log — Enzyme Kinetics Study
+Date: 2025-01-14
+Researcher: Dr. A. Chen
+Team: Biology
+
+Objective:
+Investigate the effect of temperature on the catalytic efficiency of lactase enzyme using ONPG as substrate.
+
+Methods:
+- Prepared 0.1 M phosphate buffer at pH 7.0.
+- Lactase (5 U/mL) incubated with ONPG (2 mM) at 25°C, 37°C, and 50°C.
+- Absorbance measured at 420 nm every 30 seconds over 10 minutes.
+- Vmax and Km calculated from Michaelis-Menten plots using GraphPad Prism.
+
+Results:
+- At 37°C, Vmax = 142 µmol/min/mg, Km = 0.48 mM (highest efficiency).
+- At 25°C, Vmax = 89 µmol/min/mg, Km = 0.61 mM.
+- At 50°C, Vmax dropped to 54 µmol/min/mg — enzyme denaturation observed above 45°C.
+- Activation energy calculated at 48 kJ/mol between 25–37°C.
+- Temperature coefficient (Q10) = 1.8 in physiological range.
+
+Observations:
+- Enzyme showed classic bell-shaped activity curve with peak at 37°C.
+- SDS-PAGE confirmed protein aggregation at 50°C.
+- No significant change in Km at higher temperatures suggests non-competitive thermal inhibition.
+
+Next Steps:
+- Test thermostable lactase variants from Bacillus subtilis for comparison.
+- Conduct fluorescence quenching assays to confirm denaturation mechanism.
+- Submit findings to Journal of Biochemical Kinetics by Q2 2025.

@@ -1,0 +1,31 @@
+Research Log — Thermostable Enzyme Variants
+Date: 2025-01-21
+Researcher: Dr. B. Patel
+Team: Biology
+
+Objective:
+Characterize thermostable beta-galactosidase variants from Bacillus subtilis and compare activity profiles to commercial lactase under elevated temperature conditions.
+
+Methods:
+- Three B. subtilis variants (BsLac-A, BsLac-B, BsLac-C) expressed in E. coli BL21.
+- Purified via Ni-NTA affinity chromatography; purity confirmed by SDS-PAGE.
+- Activity assays at 37°C, 50°C, 65°C, and 80°C using ONPG substrate.
+- Half-life (t1/2) measured at each temperature by tracking residual activity over 2 hours.
+- Km and Vmax determined under optimal temperature per variant.
+
+Results:
+- BsLac-C showed highest thermostability: t1/2 = 82 min at 65°C vs. 8 min for commercial lactase.
+- BsLac-C maintained 91% activity at 50°C compared to commercial lactase at 38%.
+- Km for BsLac-C at 37°C = 0.52 mM (comparable to commercial enzyme at 0.48 mM).
+- Vmax for BsLac-C at optimal 55°C = 198 µmol/min/mg — 39% higher than commercial at 37°C.
+- BsLac-A and BsLac-B showed intermediate stability, not suitable for industrial processes.
+
+Observations:
+- Disulfide bridge at Cys-142 in BsLac-C correlates with enhanced thermal resistance.
+- Circular dichroism shows retention of secondary structure up to 70°C for BsLac-C.
+- All three variants show similar pH optima (6.5–7.5), suitable for gut-environment applications.
+
+Next Steps:
+- Test BsLac-C in simulated dairy processing conditions (72°C pasteurization).
+- Initiate patent filing for BsLac-C industrial formulation.
+- Cross-reference findings with Dr. Chen's kinetics study for comparative publication.
