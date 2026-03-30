@@ -1,39 +1,49 @@
-import streamlit as st
-import httpx
 import os
+import httpx
+import streamlit as st
 from dotenv import load_dotenv
 
 load_dotenv()
+
 API = os.getenv("API_BASE_URL", "http://localhost:8000")
+API_KEY = os.getenv("API_SECRET_KEY", "")
+HEADERS = {"X-API-Key": API_KEY} if API_KEY else {}
 
 st.title("Research Log Browser")
 
-# ── Upload new log ────────────────────────────────────────────────────────────
 with st.expander("Upload New Research Log"):
     title = st.text_input("Title")
     team = st.selectbox("Team", ["General", "Biology", "Chemistry", "Data Science", "Engineering"])
     content = st.text_area("Log Content", height=200)
     if st.button("Save Log"):
         if title and content:
-            resp = httpx.post(f"{API}/api/v1/logs/", json={"title": title, "content": content, "team": team})
-            if resp.status_code == 201:
-                st.success(f"Log saved! ID: {resp.json()['id']}")
-            else:
-                st.error(f"Failed: {resp.text}")
+            try:
+                resp = httpx.post(
+                    f"{API}/api/v1/logs/",
+                    json={"title": title, "content": content, "team": team},
+                    headers=HEADERS,
+                    timeout=10,
+                )
+                if resp.status_code == 201:
+                    st.success(f"Log saved! ID: {resp.json()['id']}")
+                    st.cache_data.clear()
+                else:
+                    st.error(f"Failed: {resp.text}")
+            except Exception as e:
+                st.error(f"Connection error: {e}")
         else:
             st.warning("Title and content are required.")
 
 st.markdown("---")
 
-# ── Browse existing logs ──────────────────────────────────────────────────────
 try:
-    logs = httpx.get(f"{API}/api/v1/logs/?limit=50").json()
-except Exception:
-    st.error("Could not reach the API.")
+    logs = httpx.get(f"{API}/api/v1/logs/?limit=50", headers=HEADERS, timeout=10).json()
+except Exception as e:
+    st.error(f"Could not reach the API: {e}")
     st.stop()
 
 if not logs:
-    st.info("No logs yet. Upload one above or run the seed script.")
+    st.info("No logs yet. Upload one above or run: python seed.py")
 else:
     for log in logs:
         with st.expander(f"[{log['id']}] {log['title']}  —  Team: {log['team']}"):

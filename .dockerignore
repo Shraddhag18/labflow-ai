@@ -1,0 +1,16 @@
+.env
+.git
+.gitignore
+*.md
+__pycache__
+*.pyc
+*.pyo
+.pytest_cache
+.venv
+venv
+data/labflow.db
+*.egg-info
+.DS_Store
+Dockerfile*
+docker-compose*.yml
+render.yaml

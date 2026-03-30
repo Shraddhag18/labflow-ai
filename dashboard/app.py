@@ -1,4 +1,9 @@
+import os
+import httpx
 import streamlit as st
+from dotenv import load_dotenv
+
+load_dotenv()
 
 st.set_page_config(
     page_title="LabFlow AI",
@@ -6,6 +11,22 @@ st.set_page_config(
     layout="wide",
     initial_sidebar_state="expanded",
 )
+
+
+def api_client() -> httpx.Client:
+    """Returns an httpx client pre-configured with the API base URL and auth header."""
+    api_key = os.getenv("API_SECRET_KEY", "")
+    headers = {"X-API-Key": api_key} if api_key else {}
+    return httpx.Client(
+        base_url=os.getenv("API_BASE_URL", "http://localhost:8000"),
+        headers=headers,
+        timeout=120,
+    )
+
+
+# Expose to all pages via session_state
+if "api_client" not in st.session_state:
+    st.session_state.api_client = api_client()
 
 st.title("🔬 LabFlow AI")
 st.markdown(

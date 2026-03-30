@@ -1,4 +1,4 @@
-from fastapi import APIRouter, Depends
+from fastapi import APIRouter, Depends, Query
 from sqlalchemy.orm import Session
 from db.database import get_db
 from db import crud
@@ -16,7 +16,6 @@ def get_metrics(db: Session = Depends(get_db)):
 def get_ab_results(db: Session = Depends(get_db)):
     raw = crud.get_ab_results(db)
 
-    # Group by workflow and compute improvement
     grouped: dict[str, dict] = {}
     for row in raw:
         wf = row["workflow_name"]
@@ -29,22 +28,31 @@ def get_ab_results(db: Session = Depends(get_db)):
 
     results = []
     for wf, variants in grouped.items():
-        a_score = variants.get("A", {}).get("avg_score", 0)
-        b_score = variants.get("B", {}).get("avg_score", 0)
+        a_score = variants.get("A", {}).get("avg_score") or 0.0
+        b_score = variants.get("B", {}).get("avg_score") or 0.0
         improvement = VARIANT_B_IMPROVEMENTS.get(wf, 0)
+
+        observed = None
+        if a_score > 0:
+            observed = round((b_score - a_score) / a_score * 100, 1)
+
         results.append({
             "workflow_name": wf,
             "variant_a": variants.get("A"),
             "variant_b": variants.get("B"),
             "documented_improvement_pct": round(improvement * 100, 1),
-            "observed_improvement_pct": round((b_score - a_score) / max(a_score, 0.01) * 100, 1) if a_score else None,
+            "observed_improvement_pct": observed,
         })
 
     return results
 
 
 @router.get("/runs")
-def list_runs(skip: int = 0, limit: int = 100, db: Session = Depends(get_db)):
+def list_runs(
+    skip: int = Query(default=0, ge=0),
+    limit: int = Query(default=100, ge=1, le=1000),
+    db: Session = Depends(get_db),
+):
     runs = crud.list_runs(db, skip=skip, limit=limit)
     return [
         {

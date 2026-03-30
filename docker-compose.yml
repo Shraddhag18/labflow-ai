@@ -1,0 +1,63 @@
+services:
+
+  # ── PostgreSQL ──────────────────────────────────────────────────────────────
+  db:
+    image: postgres:16-alpine
+    restart: unless-stopped
+    environment:
+      POSTGRES_DB: labflow
+      POSTGRES_USER: labflow
+      POSTGRES_PASSWORD: ${DB_PASSWORD:-labflow_dev_secret}
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U labflow -d labflow"]
+      interval: 5s
+      timeout: 5s
+      retries: 10
+    ports:
+      - "5432:5432"   # Expose for local inspection; remove in production
+
+  # ── FastAPI ─────────────────────────────────────────────────────────────────
+  api:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    restart: unless-stopped
+    ports:
+      - "8000:8000"
+    environment:
+      OPENAI_API_KEY: ${OPENAI_API_KEY}
+      OPENAI_MODEL: ${OPENAI_MODEL:-gpt-4o-mini}
+      DATABASE_URL: postgresql://labflow:${DB_PASSWORD:-labflow_dev_secret}@db:5432/labflow
+      ENVIRONMENT: ${ENVIRONMENT:-development}
+      AB_TEST_ENABLED: ${AB_TEST_ENABLED:-true}
+      API_SECRET_KEY: ${API_SECRET_KEY:-}
+      LOG_LEVEL: ${LOG_LEVEL:-info}
+      CORS_ORIGINS: ${CORS_ORIGINS:-}
+    depends_on:
+      db:
+        condition: service_healthy
+    healthcheck:
+      test: ["CMD-SHELL", "curl -f http://localhost:8000/health || exit 1"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+
+  # ── Streamlit Dashboard ──────────────────────────────────────────────────────
+  dashboard:
+    build:
+      context: .
+      dockerfile: Dockerfile.dashboard
+    restart: unless-stopped
+    ports:
+      - "8501:8501"
+    environment:
+      API_BASE_URL: http://api:8000
+      API_SECRET_KEY: ${API_SECRET_KEY:-}
+    depends_on:
+      api:
+        condition: service_healthy
+
+volumes:
+  postgres_data:

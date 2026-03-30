@@ -1,12 +1,25 @@
+# ── Web framework ─────────────────────────────────────────────────────────────
 fastapi==0.115.0
 uvicorn[standard]==0.30.6
-openai>=1.50.0,<3.0.0
+gunicorn==23.0.0           # Production ASGI process manager
+
+# ── AI ────────────────────────────────────────────────────────────────────────
+openai==1.50.0
+
+# ── Database ──────────────────────────────────────────────────────────────────
 sqlalchemy==2.0.35
-python-dotenv==1.0.1
+psycopg2-binary==2.9.9     # PostgreSQL driver
+
+# ── Config / validation ───────────────────────────────────────────────────────
 pydantic==2.9.0
 pydantic-settings==2.5.2
+python-dotenv==1.0.1
+python-multipart==0.0.12
+
+# ── HTTP client ───────────────────────────────────────────────────────────────
 httpx==0.27.2
+
+# ── Dashboard ─────────────────────────────────────────────────────────────────
 streamlit==1.39.0
 pandas==2.2.3
 altair==5.4.1
-python-multipart==0.0.12
