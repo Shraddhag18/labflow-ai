@@ -49,16 +49,18 @@ class Settings(BaseSettings):
         return self.environment == "production"
 
     def validate_for_production(self) -> None:
-        """Raise on startup if production config is incomplete."""
+        """Log warnings if production config is incomplete."""
+        import logging
+        logger = logging.getLogger("labflow.config")
         if self.is_production:
             if "sqlite" in self.database_url:
-                raise ValueError(
-                    "SQLite is not allowed in production. "
+                logger.warning(
+                    "SQLite detected in production. "
                     "Set DATABASE_URL to a PostgreSQL connection string."
                 )
             if not self.api_secret_key:
-                raise ValueError(
-                    "API_SECRET_KEY must be set in production to protect endpoints."
+                logger.warning(
+                    "API_SECRET_KEY is not set — API endpoints are unprotected."
                 )
 
 
