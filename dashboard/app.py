@@ -82,41 +82,45 @@ def page_home():
     </div>
     """, unsafe_allow_html=True)
 
-    NAV_CARDS = [
+    # Row 1: Analyze + AI Assistant (2 wide cards)
+    ROW1 = [
         {
             "page": "analyze", "icon": "✨", "color": "#2563EB",
             "shadow": "rgba(37,99,235,0.18)",
             "title": "Analyze Research",
             "desc": "Summarize logs, extract key findings, classify scientific domains, and generate polished reports.",
-            "tag": "6 tools",
+            "tag": "6 tools", "btn": "Run an Analysis →",
         },
         {
             "page": "chat", "icon": "🤖", "color": "#059669",
             "shadow": "rgba(5,150,105,0.18)",
             "title": "AI Assistant",
             "desc": "Describe what you need in plain English — the AI automatically picks and chains the right tools.",
-            "tag": "Agentic",
+            "tag": "Agentic", "btn": "Ask the AI →",
         },
+    ]
+    # Row 2: Logs + Analytics + A/B (3 cards)
+    ROW2 = [
         {
             "page": "logs", "icon": "📂", "color": "#0EA5E9",
             "shadow": "rgba(14,165,233,0.18)",
             "title": "Research Log Library",
             "desc": "Browse, upload, and manage all your research logs in one organized place.",
-            "tag": "Storage",
+            "tag": "Storage", "btn": "Browse Logs →",
         },
         {
             "page": "analytics", "icon": "📊", "color": "#F59E0B",
             "shadow": "rgba(245,158,11,0.18)",
             "title": "Usage & Performance",
             "desc": "Live view of analyses run, average response times, and AI quality scores.",
-            "tag": "Live metrics",
+            "tag": "Live metrics", "btn": "View Metrics →",
         },
         {
             "page": "ab", "icon": "🧪", "color": "#EC4899",
             "shadow": "rgba(236,72,153,0.18)",
             "title": "Prompt A/B Results",
             "desc": "How we improved AI output quality by 38% using systematic prompt testing.",
-            "tag": "+38% quality",
+            "tag": "+38% quality", "btn": "See Test Results →",
         },
     ]
 
@@ -124,7 +128,7 @@ def page_home():
         return f"""
         <div style="background:#ffffff;border-radius:18px;border-top:4px solid {card['color']};
                     box-shadow:0 4px 20px {card['shadow']};padding:1.6rem 1.5rem 1rem;
-                    min-height:185px;margin-bottom:0.5rem;">
+                    min-height:175px;margin-bottom:0.5rem;">
           <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:1rem;">
             <div style="background:{card['color']}18;border-radius:12px;width:44px;height:44px;
                         display:flex;align-items:center;justify-content:center;font-size:1.4rem;">
@@ -140,52 +144,42 @@ def page_home():
         </div>
         """
 
-    # Per-card button colors via :has() CSS — injected once before any cards
+    # All buttons: light sky blue
     st.markdown("""
     <style>
-    [data-testid="stMarkdown"]:has(.btn-analyze) ~ [data-testid="stButton"] button,
-    [data-testid="stMarkdown"]:has(.btn-analyze) ~ div [data-testid="stButton"] button {
-      background: linear-gradient(135deg, #1d4ed8, #2563eb) !important;
-      box-shadow: 0 3px 10px rgba(37,99,235,0.35) !important;
+    .home-btn ~ [data-testid="stButton"] button {
+      background: linear-gradient(135deg, #38bdf8, #0ea5e9) !important;
+      color: #fff !important;
+      border: none !important;
+      font-weight: 600 !important;
+      box-shadow: 0 3px 12px rgba(14,165,233,0.35) !important;
     }
-    [data-testid="stMarkdown"]:has(.btn-chat) ~ [data-testid="stButton"] button {
-      background: linear-gradient(135deg, #047857, #059669) !important;
-      box-shadow: 0 3px 10px rgba(5,150,105,0.35) !important;
-    }
-    [data-testid="stMarkdown"]:has(.btn-logs) ~ [data-testid="stButton"] button {
-      background: linear-gradient(135deg, #0284c7, #0ea5e9) !important;
-      box-shadow: 0 3px 10px rgba(14,165,233,0.35) !important;
-    }
-    [data-testid="stMarkdown"]:has(.btn-analytics) ~ [data-testid="stButton"] button {
-      background: linear-gradient(135deg, #d97706, #f59e0b) !important;
-      box-shadow: 0 3px 10px rgba(245,158,11,0.35) !important;
-    }
-    [data-testid="stMarkdown"]:has(.btn-ab) ~ [data-testid="stButton"] button {
-      background: linear-gradient(135deg, #db2777, #ec4899) !important;
-      box-shadow: 0 3px 10px rgba(236,72,153,0.35) !important;
+    .home-btn ~ [data-testid="stButton"] button:hover {
+      background: linear-gradient(135deg, #0ea5e9, #0284c7) !important;
+      box-shadow: 0 5px 16px rgba(14,165,233,0.5) !important;
     }
     </style>
     """, unsafe_allow_html=True)
 
-    # Row 1: 3 cards
-    cols = st.columns(3)
-    for card in NAV_CARDS[:3]:
-        with cols[NAV_CARDS.index(card)]:
+    # Row 1: 2 cards
+    c1, c2 = st.columns(2)
+    for col, card in zip([c1, c2], ROW1):
+        with col:
             st.markdown(card_html(card), unsafe_allow_html=True)
-            st.markdown(f'<div class="btn-{card["page"]}"></div>', unsafe_allow_html=True)
-            if st.button("Open →", key=f"nav_{card['page']}", use_container_width=True):
+            st.markdown('<div class="home-btn"></div>', unsafe_allow_html=True)
+            if st.button(card["btn"], key=f"nav_{card['page']}", use_container_width=True):
                 st.session_state.page = card["page"]
                 st.rerun()
 
     st.markdown("<div style='height:0.75rem'></div>", unsafe_allow_html=True)
 
-    # Row 2: 2 cards centered
-    _, c1, c2, _ = st.columns([1, 2, 2, 1])
-    for col, card in zip([c1, c2], NAV_CARDS[3:]):
+    # Row 2: 3 cards
+    c1, c2, c3 = st.columns(3)
+    for col, card in zip([c1, c2, c3], ROW2):
         with col:
             st.markdown(card_html(card), unsafe_allow_html=True)
-            st.markdown(f'<div class="btn-{card["page"]}"></div>', unsafe_allow_html=True)
-            if st.button("Open →", key=f"nav_{card['page']}", use_container_width=True):
+            st.markdown('<div class="home-btn"></div>', unsafe_allow_html=True)
+            if st.button(card["btn"], key=f"nav_{card['page']}", use_container_width=True):
                 st.session_state.page = card["page"]
                 st.rerun()
 
