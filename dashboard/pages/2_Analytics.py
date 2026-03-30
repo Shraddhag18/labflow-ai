@@ -1,8 +1,12 @@
 import os
+import sys
 import httpx
 import pandas as pd
 import streamlit as st
 from dotenv import load_dotenv
+
+sys.path.append(os.path.dirname(os.path.dirname(os.path.dirname(__file__))))
+from dashboard.style import GLOBAL_CSS
 
 load_dotenv()
 
@@ -10,14 +14,7 @@ API = os.getenv("API_BASE_URL", "http://localhost:8000")
 API_KEY = os.getenv("API_SECRET_KEY", "")
 HEADERS = {"X-API-Key": API_KEY} if API_KEY else {}
 
-st.markdown("""
-<style>
-  #MainMenu, footer, header { visibility: hidden; }
-  .stApp { background: #060d1f; }
-  [data-testid="stSidebar"] { background: #0b1120; border-right: 1px solid rgba(56,189,248,0.1); }
-  [data-testid="metric-container"] { background: #0d1a35; border: 1px solid rgba(56,189,248,0.12); border-radius: 12px; padding: 1rem 1.25rem; }
-</style>
-""", unsafe_allow_html=True)
+st.markdown(GLOBAL_CSS, unsafe_allow_html=True)
 
 st.markdown("## Usage & Performance")
 st.markdown("<p style='color:#4a6080;margin-bottom:1.5rem;'>A live view of how the system is performing.</p>", unsafe_allow_html=True)

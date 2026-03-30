@@ -1,8 +1,12 @@
 import os
+import sys
 import httpx
 import pandas as pd
 import streamlit as st
 from dotenv import load_dotenv
+
+sys.path.append(os.path.dirname(os.path.dirname(os.path.dirname(__file__))))
+from dashboard.style import GLOBAL_CSS
 
 load_dotenv()
 
@@ -10,26 +14,17 @@ API = os.getenv("API_BASE_URL", "http://localhost:8000")
 API_KEY = os.getenv("API_SECRET_KEY", "")
 HEADERS = {"X-API-Key": API_KEY} if API_KEY else {}
 
-st.markdown("""
-<style>
-  #MainMenu, footer, header { visibility: hidden; }
-  .stApp { background: #060d1f; }
-  [data-testid="stSidebar"] { background: #0b1120; border-right: 1px solid rgba(56,189,248,0.1); }
-  [data-testid="metric-container"] { background: #0d1a35; border: 1px solid rgba(56,189,248,0.12); border-radius: 12px; padding: 1rem 1.25rem; }
-  .ab-card { background: #0d1a35; border: 1px solid rgba(56,189,248,0.12); border-radius: 12px; padding: 1.5rem; }
-  .ab-card.winner { border-color: rgba(163,230,53,0.35); border-left: 3px solid #a3e635; }
-</style>
-""", unsafe_allow_html=True)
+st.markdown(GLOBAL_CSS, unsafe_allow_html=True)
 
 st.markdown("## Prompt Improvement Results")
 st.markdown("<p style='color:#4a6080;margin-bottom:0.5rem;'>We tested two versions of every AI prompt. Here's what worked better.</p>", unsafe_allow_html=True)
 
 st.markdown("""
-<div style='background:#0d1a35;border:1px solid rgba(56,189,248,0.12);border-radius:12px;padding:1rem 1.5rem;margin-bottom:1.5rem;'>
-  <span style='color:#6b84a8;font-size:0.85rem;'>
-  <b style='color:#f0f6ff'>Version A</b> — Simple, direct instructions to the AI &nbsp;|&nbsp;
-  <b style='color:#a3e635'>Version B</b> — Step-by-step reasoning with strict output rules &nbsp;→&nbsp;
-  <b style='color:#a3e635'>+38% better quality on average</b>
+<div style='background:#ede9fe;border:1px solid #c4b5fd;border-radius:12px;padding:1rem 1.5rem;margin-bottom:1.5rem;'>
+  <span style='color:#4c1d95;font-size:0.88rem;'>
+  <b>Version A</b> — Simple, direct instructions to the AI &nbsp;·&nbsp;
+  <b>Version B</b> — Step-by-step reasoning with strict output rules &nbsp;→&nbsp;
+  <b style='color:#059669'>+38% better quality on average</b>
   </span>
 </div>
 """, unsafe_allow_html=True)
@@ -65,25 +60,25 @@ for item in ab_data:
 
     with col1:
         st.markdown(f"""
-        <div class="ab-card">
-          <div style="font-size:0.7rem;color:#4a6080;font-weight:700;text-transform:uppercase;letter-spacing:0.07em;margin-bottom:0.5rem;">Version A — Baseline</div>
-          <div style="font-size:1rem;font-weight:700;color:#f0f6ff;margin-bottom:0.75rem;">{name}</div>
-          <div style="background:rgba(255,255,255,0.05);border-radius:999px;height:6px;margin-bottom:0.4rem;">
-            <div style="width:{int(a_score*100)}%;background:#4a6080;height:6px;border-radius:999px;"></div>
+        <div style="background:#ffffff;border:1.5px solid #e2e8f0;border-radius:14px;padding:1.25rem 1.5rem;box-shadow:0 1px 4px rgba(0,0,0,0.04);">
+          <div style="font-size:0.68rem;color:#94a3b8;font-weight:700;text-transform:uppercase;letter-spacing:0.07em;margin-bottom:0.5rem;">Version A — Baseline</div>
+          <div style="font-size:1rem;font-weight:700;color:#0f172a;margin-bottom:0.85rem;">{name}</div>
+          <div style="background:#f1f5f9;border-radius:999px;height:7px;margin-bottom:0.5rem;">
+            <div style="width:{int(a_score*100)}%;background:#94a3b8;height:7px;border-radius:999px;"></div>
           </div>
-          <div style="color:#4a6080;font-size:0.82rem;">Quality: {a_score:.0%} &nbsp;·&nbsp; {a.get('sample_count', 0)} runs</div>
+          <div style="color:#64748b;font-size:0.82rem;">Quality: <b>{a_score:.0%}</b> &nbsp;·&nbsp; {a.get('sample_count', 0)} runs</div>
         </div>
         """, unsafe_allow_html=True)
 
     with col2:
         st.markdown(f"""
-        <div class="ab-card winner">
-          <div style="font-size:0.7rem;color:#a3e635;font-weight:700;text-transform:uppercase;letter-spacing:0.07em;margin-bottom:0.5rem;">✓ Version B — Winner</div>
-          <div style="font-size:1rem;font-weight:700;color:#f0f6ff;margin-bottom:0.75rem;">{name}</div>
-          <div style="background:rgba(255,255,255,0.05);border-radius:999px;height:6px;margin-bottom:0.4rem;">
-            <div style="width:{int(b_score*100)}%;background:#a3e635;height:6px;border-radius:999px;"></div>
+        <div style="background:#faf5ff;border:1.5px solid #7c3aed;border-left:3px solid #7c3aed;border-radius:14px;padding:1.25rem 1.5rem;box-shadow:0 4px 12px rgba(124,58,237,0.08);">
+          <div style="font-size:0.68rem;color:#7c3aed;font-weight:700;text-transform:uppercase;letter-spacing:0.07em;margin-bottom:0.5rem;">✓ Version B — Winner</div>
+          <div style="font-size:1rem;font-weight:700;color:#0f172a;margin-bottom:0.85rem;">{name}</div>
+          <div style="background:#f1f5f9;border-radius:999px;height:7px;margin-bottom:0.5rem;">
+            <div style="width:{int(b_score*100)}%;background:#7c3aed;height:7px;border-radius:999px;"></div>
           </div>
-          <div style="color:#6b84a8;font-size:0.82rem;">Quality: {b_score:.0%} &nbsp;·&nbsp; {b.get('sample_count', 0)} runs</div>
+          <div style="color:#64748b;font-size:0.82rem;">Quality: <b style='color:#5b21b6'>{b_score:.0%}</b> &nbsp;·&nbsp; {b.get('sample_count', 0)} runs</div>
         </div>
         """, unsafe_allow_html=True)
 

@@ -1,8 +1,12 @@
 import os
+import sys
 import json
 import httpx
 import streamlit as st
 from dotenv import load_dotenv
+
+sys.path.append(os.path.dirname(os.path.dirname(os.path.dirname(__file__))))
+from dashboard.style import GLOBAL_CSS
 
 load_dotenv()
 
@@ -10,22 +14,7 @@ API = os.getenv("API_BASE_URL", "http://localhost:8000")
 API_KEY = os.getenv("API_SECRET_KEY", "")
 HEADERS = {"X-API-Key": API_KEY} if API_KEY else {}
 
-st.markdown("""
-<style>
-  #MainMenu, footer, header { visibility: hidden; }
-  .stApp { background: #060d1f; }
-  [data-testid="stSidebar"] { background: #0b1120; border-right: 1px solid rgba(56,189,248,0.1); }
-  [data-testid="metric-container"] { background: #0d1a35; border: 1px solid rgba(56,189,248,0.12); border-radius: 12px; padding: 1rem 1.25rem; }
-  .stButton > button { background: #a3e635 !important; color: #060d1f !important; border: none !important; font-weight: 700 !important; border-radius: 8px !important; }
-  .stTextArea textarea, .stTextInput input { background: #0d1a35 !important; color: #f0f6ff !important; border: 1px solid rgba(56,189,248,0.15) !important; border-radius: 8px !important; }
-  .tool-card { background: #0d1a35; border: 1px solid rgba(56,189,248,0.12); border-radius: 12px; padding: 1.25rem 1.5rem; cursor: pointer; transition: border-color 0.2s; margin-bottom: 0.75rem; }
-  .tool-card:hover { border-color: rgba(163,230,53,0.4); }
-  .tool-card.active { border-color: #a3e635; border-left: 3px solid #a3e635; }
-  .result-section { background: #0a1628; border: 1px solid rgba(163,230,53,0.2); border-left: 3px solid #a3e635; border-radius: 8px; padding: 1.25rem 1.5rem; margin-top: 1rem; }
-  .result-key { color: #38bdf8; font-size: 0.8rem; font-weight: 700; text-transform: uppercase; letter-spacing: 0.05em; margin-top: 0.75rem; margin-bottom: 0.25rem; }
-  .result-val { color: #c8d8f0; font-size: 0.9rem; line-height: 1.7; }
-</style>
-""", unsafe_allow_html=True)
+st.markdown(GLOBAL_CSS, unsafe_allow_html=True)
 
 # ── Tool definitions ──────────────────────────────────────────────────────────
 TOOLS = [
@@ -86,12 +75,17 @@ cols = st.columns(3)
 for i, tool in enumerate(TOOLS):
     with cols[i % 3]:
         is_active = st.session_state.selected_tool == tool["id"]
-        border = "border: 1px solid #a3e635; border-left: 3px solid #a3e635;" if is_active else "border: 1px solid rgba(56,189,248,0.12);"
+        if is_active:
+            card_style = "background:#faf5ff;border:1.5px solid #7c3aed;border-left:3px solid #7c3aed;border-radius:14px;padding:1.1rem 1.25rem;margin-bottom:0.6rem;min-height:110px;box-shadow:0 4px 16px rgba(124,58,237,0.1);"
+            name_color = "#5b21b6"
+        else:
+            card_style = "background:#ffffff;border:1.5px solid #e2e8f0;border-radius:14px;padding:1.1rem 1.25rem;margin-bottom:0.6rem;min-height:110px;box-shadow:0 1px 4px rgba(0,0,0,0.04);"
+            name_color = "#312e81"
         st.markdown(f"""
-        <div style="background:#0d1a35;{border}border-radius:12px;padding:1.1rem 1.25rem;margin-bottom:0.6rem;min-height:110px;">
+        <div style="{card_style}">
           <div style="font-size:1.3rem;margin-bottom:0.4rem;">{tool['icon']}</div>
-          <div style="font-weight:700;color:#f0f6ff;font-size:0.9rem;margin-bottom:0.3rem;">{tool['name']}</div>
-          <div style="color:#4a6080;font-size:0.78rem;line-height:1.5;">{tool['description']}</div>
+          <div style="font-weight:700;color:{name_color};font-size:0.9rem;margin-bottom:0.3rem;">{tool['name']}</div>
+          <div style="color:#64748b;font-size:0.78rem;line-height:1.5;">{tool['description']}</div>
         </div>
         """, unsafe_allow_html=True)
         if st.button("Select", key=f"pick_{tool['id']}"):
@@ -178,10 +172,7 @@ if st.session_state.last_result:
             st.markdown(f"<div class='result-key'>{label}</div>", unsafe_allow_html=True)
             if isinstance(value, list):
                 for item in value:
-                    if isinstance(item, dict):
-                        st.markdown(f"<div class='result-val' style='background:#060d1f;border-radius:6px;padding:0.5rem 0.75rem;margin-bottom:0.3rem;'>{item}</div>", unsafe_allow_html=True)
-                    else:
-                        st.markdown(f"<div class='result-val'>• {item}</div>", unsafe_allow_html=True)
+                    st.markdown(f"<div class='result-item'>• {item}</div>", unsafe_allow_html=True)
             else:
                 st.markdown(f"<div class='result-val'>{value}</div>", unsafe_allow_html=True)
     else:

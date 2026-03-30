@@ -1,7 +1,11 @@
 import os
+import sys
 import httpx
 import streamlit as st
 from dotenv import load_dotenv
+
+sys.path.append(os.path.dirname(os.path.dirname(os.path.dirname(__file__))))
+from dashboard.style import GLOBAL_CSS
 
 load_dotenv()
 
@@ -9,29 +13,20 @@ API = os.getenv("API_BASE_URL", "http://localhost:8000")
 API_KEY = os.getenv("API_SECRET_KEY", "")
 HEADERS = {"X-API-Key": API_KEY} if API_KEY else {}
 
-st.markdown("""
-<style>
-  #MainMenu, footer, header { visibility: hidden; }
-  .stApp { background: #060d1f; }
-  [data-testid="stSidebar"] { background: #0b1120; border-right: 1px solid rgba(56,189,248,0.1); }
-  .stButton > button { background: #a3e635 !important; color: #060d1f !important; border: none !important; font-weight: 700 !important; border-radius: 8px !important; }
-  .stTextArea textarea { background: #0d1a35 !important; color: #f0f6ff !important; border: 1px solid rgba(56,189,248,0.15) !important; border-radius: 8px !important; }
-  [data-testid="stChatMessage"] { background: #0d1a35; border-radius: 12px; border: 1px solid rgba(56,189,248,0.1); margin-bottom: 0.5rem; }
-</style>
-""", unsafe_allow_html=True)
+st.markdown(GLOBAL_CSS, unsafe_allow_html=True)
 
 st.markdown("## AI Research Assistant")
 st.markdown("<p style='color:#4a6080;margin-bottom:0.5rem;'>Just tell it what you need in plain English — it figures out the rest.</p>", unsafe_allow_html=True)
 
 st.markdown("""
-<div style='background:#0d1a35;border:1px solid rgba(56,189,248,0.12);border-radius:10px;padding:0.85rem 1.25rem;margin-bottom:1.5rem;'>
-  <span style='color:#6b84a8;font-size:0.83rem;'>
-  Try: &nbsp;
-  <b style='color:#38bdf8'>"Summarize this log and tell me what domain it belongs to"</b>
+<div style='background:#ede9fe;border:1px solid #c4b5fd;border-radius:10px;padding:0.85rem 1.25rem;margin-bottom:1.5rem;'>
+  <span style='color:#4c1d95;font-size:0.84rem;font-weight:500;'>
+  💡 Try: &nbsp;
+  <b>"Summarize this log and tell me what domain it belongs to"</b>
   &nbsp;·&nbsp;
-  <b style='color:#38bdf8'>"What are the key findings from this research?"</b>
+  <b>"What are the key findings from this research?"</b>
   &nbsp;·&nbsp;
-  <b style='color:#38bdf8'>"Compare these two studies and highlight contradictions"</b>
+  <b>"Compare these two studies"</b>
   </span>
 </div>
 """, unsafe_allow_html=True)
