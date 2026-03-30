@@ -63,101 +63,128 @@ def top_nav(current: str):
 # HOME PAGE
 # ══════════════════════════════════════════════════════════════════════════════
 def page_home():
-    top_nav("home")
-
+    # Custom header — no st.columns so stHorizontalBlock count starts at the card rows
     st.markdown("""
-    <div style="margin-bottom:2rem;">
-      <h1 style="font-size:2rem;font-weight:900;color:#0f172a;margin-bottom:0.25rem;">
-        What do you want to do with your research?
+    <div style="padding:0.5rem 0 2.25rem;">
+      <div style="display:flex;align-items:center;gap:0.75rem;margin-bottom:1.75rem;">
+        <div style="background:linear-gradient(135deg,#2563eb,#0ea5e9);border-radius:11px;width:40px;height:40px;
+                    display:flex;align-items:center;justify-content:center;font-size:1.25rem;box-shadow:0 4px 12px rgba(37,99,235,0.3);">🔬</div>
+        <span style="font-weight:800;font-size:1.25rem;color:#0f172a;letter-spacing:-0.02em;">LabFlow AI</span>
+      </div>
+      <h1 style="font-size:2.1rem;font-weight:900;color:#0f172a;margin:0 0 0.5rem;line-height:1.15;letter-spacing:-0.03em;">
+        Your AI-powered<br>
+        <span style="background:linear-gradient(135deg,#2563eb 0%,#0ea5e9 50%,#059669 100%);
+                     -webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;">
+          research workspace
+        </span>
       </h1>
-      <p style="color:#64748b;font-size:1rem;">Click any card to get started — no setup needed.</p>
+      <p style="color:#64748b;font-size:1rem;margin:0;">Pick what you want to do — no setup needed.</p>
     </div>
     """, unsafe_allow_html=True)
 
-    # ── Main action cards ─────────────────────────────────────────────────────
     NAV_CARDS = [
         {
-            "page": "analyze",
-            "icon": "✨",
-            "color": "#7c3aed",
-            "bg": "#faf5ff",
-            "border": "#c4b5fd",
+            "page": "analyze", "icon": "✨", "color": "#2563EB",
+            "shadow": "rgba(37,99,235,0.18)",
             "title": "Analyze Research",
-            "desc": "Summarize logs, extract findings, classify domains, generate reports, and more.",
-            "tag": "6 tools available",
+            "desc": "Summarize logs, extract key findings, classify scientific domains, and generate polished reports.",
+            "tag": "6 tools",
         },
         {
-            "page": "chat",
-            "icon": "🤖",
-            "color": "#2563eb",
-            "bg": "#eff6ff",
-            "border": "#bfdbfe",
+            "page": "chat", "icon": "🤖", "color": "#059669",
+            "shadow": "rgba(5,150,105,0.18)",
             "title": "AI Assistant",
-            "desc": "Just describe what you need in plain English — the AI picks the right tool automatically.",
-            "tag": "Agentic mode",
+            "desc": "Describe what you need in plain English — the AI automatically picks and chains the right tools.",
+            "tag": "Agentic",
         },
         {
-            "page": "logs",
-            "icon": "📂",
-            "color": "#0891b2",
-            "bg": "#ecfeff",
-            "border": "#a5f3fc",
+            "page": "logs", "icon": "📂", "color": "#0EA5E9",
+            "shadow": "rgba(14,165,233,0.18)",
             "title": "Research Log Library",
-            "desc": "Browse, upload, and manage all your research logs in one place.",
-            "tag": "Log management",
+            "desc": "Browse, upload, and manage all your research logs in one organized place.",
+            "tag": "Storage",
         },
         {
-            "page": "analytics",
-            "icon": "📊",
-            "color": "#059669",
-            "bg": "#f0fdf4",
-            "border": "#bbf7d0",
+            "page": "analytics", "icon": "📊", "color": "#F59E0B",
+            "shadow": "rgba(245,158,11,0.18)",
             "title": "Usage & Performance",
-            "desc": "See how many analyses have run, average response times, and quality scores.",
+            "desc": "Live view of analyses run, average response times, and AI quality scores.",
             "tag": "Live metrics",
         },
         {
-            "page": "ab",
-            "icon": "🧪",
-            "color": "#d97706",
-            "bg": "#fffbeb",
-            "border": "#fde68a",
+            "page": "ab", "icon": "🧪", "color": "#EC4899",
+            "shadow": "rgba(236,72,153,0.18)",
             "title": "Prompt A/B Results",
-            "desc": "See how we improved AI output quality by 38% through systematic prompt testing.",
-            "tag": "+38% quality gain",
+            "desc": "How we improved AI output quality by 38% using systematic prompt testing.",
+            "tag": "+38% quality",
         },
     ]
 
-    # First row: 3 cards
-    cols = st.columns(3)
-    for i, card in enumerate(NAV_CARDS[:3]):
-        with cols[i]:
-            st.markdown(f"""
-            <div style="background:{card['bg']};border:1.5px solid {card['border']};border-radius:16px;padding:1.75rem 1.5rem;min-height:180px;position:relative;">
-              <div style="font-size:2rem;margin-bottom:0.75rem;">{card['icon']}</div>
-              <div style="font-weight:800;font-size:1.05rem;color:#0f172a;margin-bottom:0.4rem;">{card['title']}</div>
-              <div style="color:#64748b;font-size:0.85rem;line-height:1.6;margin-bottom:1rem;">{card['desc']}</div>
-              <span style="background:{card['color']};color:#fff;font-size:0.7rem;font-weight:600;padding:0.2rem 0.65rem;border-radius:999px;">{card['tag']}</span>
+    def card_html(card):
+        return f"""
+        <div style="background:#ffffff;border-radius:18px;border-top:4px solid {card['color']};
+                    box-shadow:0 4px 20px {card['shadow']};padding:1.6rem 1.5rem 1rem;
+                    min-height:185px;margin-bottom:0.5rem;">
+          <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:1rem;">
+            <div style="background:{card['color']}18;border-radius:12px;width:44px;height:44px;
+                        display:flex;align-items:center;justify-content:center;font-size:1.4rem;">
+              {card['icon']}
             </div>
-            """, unsafe_allow_html=True)
-            if st.button(f"Open →", key=f"nav_{card['page']}", use_container_width=True):
+            <span style="background:{card['color']}15;color:{card['color']};font-size:0.68rem;
+                         font-weight:700;padding:0.22rem 0.7rem;border-radius:999px;
+                         letter-spacing:0.05em;text-transform:uppercase;">{card['tag']}</span>
+          </div>
+          <div style="font-weight:800;font-size:1.02rem;color:#0f172a;margin-bottom:0.45rem;
+                      letter-spacing:-0.01em;">{card['title']}</div>
+          <div style="color:#64748b;font-size:0.83rem;line-height:1.65;">{card['desc']}</div>
+        </div>
+        """
+
+    # Per-card button colors via :has() CSS — injected once before any cards
+    st.markdown("""
+    <style>
+    [data-testid="stMarkdown"]:has(.btn-analyze) ~ [data-testid="stButton"] button,
+    [data-testid="stMarkdown"]:has(.btn-analyze) ~ div [data-testid="stButton"] button {
+      background: linear-gradient(135deg, #1d4ed8, #2563eb) !important;
+      box-shadow: 0 3px 10px rgba(37,99,235,0.35) !important;
+    }
+    [data-testid="stMarkdown"]:has(.btn-chat) ~ [data-testid="stButton"] button {
+      background: linear-gradient(135deg, #047857, #059669) !important;
+      box-shadow: 0 3px 10px rgba(5,150,105,0.35) !important;
+    }
+    [data-testid="stMarkdown"]:has(.btn-logs) ~ [data-testid="stButton"] button {
+      background: linear-gradient(135deg, #0284c7, #0ea5e9) !important;
+      box-shadow: 0 3px 10px rgba(14,165,233,0.35) !important;
+    }
+    [data-testid="stMarkdown"]:has(.btn-analytics) ~ [data-testid="stButton"] button {
+      background: linear-gradient(135deg, #d97706, #f59e0b) !important;
+      box-shadow: 0 3px 10px rgba(245,158,11,0.35) !important;
+    }
+    [data-testid="stMarkdown"]:has(.btn-ab) ~ [data-testid="stButton"] button {
+      background: linear-gradient(135deg, #db2777, #ec4899) !important;
+      box-shadow: 0 3px 10px rgba(236,72,153,0.35) !important;
+    }
+    </style>
+    """, unsafe_allow_html=True)
+
+    # Row 1: 3 cards
+    cols = st.columns(3)
+    for card in NAV_CARDS[:3]:
+        with cols[NAV_CARDS.index(card)]:
+            st.markdown(card_html(card), unsafe_allow_html=True)
+            st.markdown(f'<div class="btn-{card["page"]}"></div>', unsafe_allow_html=True)
+            if st.button("Open →", key=f"nav_{card['page']}", use_container_width=True):
                 st.session_state.page = card["page"]
                 st.rerun()
 
-    st.markdown("<br>", unsafe_allow_html=True)
+    st.markdown("<div style='height:0.75rem'></div>", unsafe_allow_html=True)
 
-    # Second row: 2 cards centred
-    _, c1, c2, _ = st.columns([0.5, 2, 2, 0.5])
+    # Row 2: 2 cards centered
+    _, c1, c2, _ = st.columns([1, 2, 2, 1])
     for col, card in zip([c1, c2], NAV_CARDS[3:]):
         with col:
-            st.markdown(f"""
-            <div style="background:{card['bg']};border:1.5px solid {card['border']};border-radius:16px;padding:1.75rem 1.5rem;min-height:180px;">
-              <div style="font-size:2rem;margin-bottom:0.75rem;">{card['icon']}</div>
-              <div style="font-weight:800;font-size:1.05rem;color:#0f172a;margin-bottom:0.4rem;">{card['title']}</div>
-              <div style="color:#64748b;font-size:0.85rem;line-height:1.6;margin-bottom:1rem;">{card['desc']}</div>
-              <span style="background:{card['color']};color:#fff;font-size:0.7rem;font-weight:600;padding:0.2rem 0.65rem;border-radius:999px;">{card['tag']}</span>
-            </div>
-            """, unsafe_allow_html=True)
+            st.markdown(card_html(card), unsafe_allow_html=True)
+            st.markdown(f'<div class="btn-{card["page"]}"></div>', unsafe_allow_html=True)
             if st.button("Open →", key=f"nav_{card['page']}", use_container_width=True):
                 st.session_state.page = card["page"]
                 st.rerun()

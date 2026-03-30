@@ -10,7 +10,7 @@ GLOBAL_CSS = """
 
 /* ── Background ───────────────────────────────────── */
 .stApp {
-  background: #f5f7ff;
+  background: #f0f4ff;
 }
 
 /* ── Sidebar ──────────────────────────────────────── */
@@ -81,7 +81,7 @@ h1, h2, h3 { color: #0f172a !important; }
   box-shadow: 0 1px 4px rgba(0,0,0,0.05) !important;
 }
 [data-testid="metric-container"] [data-testid="stMetricValue"] {
-  color: #312e81 !important;
+  color: #1d4ed8 !important;
   font-weight: 800 !important;
 }
 [data-testid="metric-container"] [data-testid="stMetricLabel"] {
@@ -127,7 +127,7 @@ h1, h2, h3 { color: #0f172a !important; }
   font-weight: 700;
   text-transform: uppercase;
   letter-spacing: 0.07em;
-  color: #7c3aed;
+  color: #2563eb;
   margin-top: 1rem;
   margin-bottom: 0.25rem;
 }
@@ -149,18 +149,18 @@ h1, h2, h3 { color: #0f172a !important; }
 
 /* ── Buttons ──────────────────────────────────────── */
 .stButton > button {
-  background: linear-gradient(135deg, #7c3aed, #6d28d9) !important;
+  background: linear-gradient(135deg, #1e293b, #334155) !important;
   color: #ffffff !important;
   border: none !important;
   font-weight: 600 !important;
   border-radius: 9px !important;
   padding: 0.55rem 1.5rem !important;
   transition: all 0.15s !important;
-  box-shadow: 0 2px 8px rgba(124,58,237,0.25) !important;
+  box-shadow: 0 2px 6px rgba(0,0,0,0.15) !important;
 }
 .stButton > button:hover {
   transform: translateY(-1px) !important;
-  box-shadow: 0 4px 16px rgba(124,58,237,0.35) !important;
+  box-shadow: 0 4px 14px rgba(0,0,0,0.22) !important;
 }
 
 /* ── Inputs ───────────────────────────────────────── */
@@ -172,8 +172,8 @@ h1, h2, h3 { color: #0f172a !important; }
   font-size: 0.9rem !important;
 }
 .stTextArea textarea:focus, .stTextInput input:focus {
-  border-color: #7c3aed !important;
-  box-shadow: 0 0 0 3px rgba(124,58,237,0.1) !important;
+  border-color: #2563eb !important;
+  box-shadow: 0 0 0 3px rgba(37,99,235,0.1) !important;
 }
 .stSelectbox > div > div {
   background: #ffffff !important;
@@ -225,7 +225,7 @@ h1, h2, h3 { color: #0f172a !important; }
 hr { border-color: #e2e8f0 !important; }
 
 /* ── Spinner ──────────────────────────────────────── */
-.stSpinner > div { border-top-color: #7c3aed !important; }
+.stSpinner > div { border-top-color: #2563eb !important; }
 
 /* ── Highlight tags ───────────────────────────────── */
 .badge {
