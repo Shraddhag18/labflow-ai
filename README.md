@@ -17,7 +17,7 @@
 | **Live Dashboard** | https://labflow-dashboard-production.up.railway.app |
 | **Landing Page** | https://shraddhag18.github.io/labflow-ai/ |
 | **GitHub Repo** | https://github.com/Shraddhag18/labflow-ai |
-| **API Docs (Swagger)** | `<your-api-url>/docs` — available once API is running |
+| **API Docs (Swagger)** | https://labflow-api-production.up.railway.app/docs |
 
 ---
 
