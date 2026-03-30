@@ -1,10 +1,47 @@
+# Environment
 .env
+.env.local
+.env.*.local
+
+# Database
 data/labflow.db
+data/*.db
+*.sqlite3
+
+# Python
 __pycache__/
 *.py[cod]
+*.pyo
+*.pyd
 *.egg-info/
-.pytest_cache/
+dist/
+build/
+.eggs/
+
+# Virtual environments
 .venv/
 venv/
-*.log
+env/
+ENV/
+
+# Testing
+.pytest_cache/
+.coverage
+htmlcov/
+
+# IDE
+.vscode/
+.idea/
+*.swp
+*.swo
+
+# OS
 .DS_Store
+Thumbs.db
+
+# Logs
+*.log
+logs/
+
+# Streamlit
+.streamlit/secrets.toml
