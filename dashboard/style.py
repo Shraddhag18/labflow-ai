@@ -149,18 +149,23 @@ h1, h2, h3 { color: #0f172a !important; }
 
 /* ── Buttons ──────────────────────────────────────── */
 .stButton > button {
-  background: linear-gradient(135deg, #1e293b, #334155) !important;
+  background: linear-gradient(135deg, #38bdf8, #0ea5e9) !important;
   color: #ffffff !important;
   border: none !important;
   font-weight: 600 !important;
   border-radius: 9px !important;
   padding: 0.55rem 1.5rem !important;
   transition: all 0.15s !important;
-  box-shadow: 0 2px 6px rgba(0,0,0,0.15) !important;
+  box-shadow: 0 2px 10px rgba(14,165,233,0.35) !important;
+  letter-spacing: 0.01em !important;
 }
 .stButton > button:hover {
+  background: linear-gradient(135deg, #0ea5e9, #0284c7) !important;
   transform: translateY(-1px) !important;
-  box-shadow: 0 4px 14px rgba(0,0,0,0.22) !important;
+  box-shadow: 0 4px 16px rgba(14,165,233,0.5) !important;
+}
+.stButton > button p {
+  color: #ffffff !important;
 }
 
 /* ── Inputs ───────────────────────────────────────── */

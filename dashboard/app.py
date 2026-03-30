@@ -144,29 +144,11 @@ def page_home():
         </div>
         """
 
-    # All buttons: light sky blue
-    st.markdown("""
-    <style>
-    .home-btn ~ [data-testid="stButton"] button {
-      background: linear-gradient(135deg, #38bdf8, #0ea5e9) !important;
-      color: #fff !important;
-      border: none !important;
-      font-weight: 600 !important;
-      box-shadow: 0 3px 12px rgba(14,165,233,0.35) !important;
-    }
-    .home-btn ~ [data-testid="stButton"] button:hover {
-      background: linear-gradient(135deg, #0ea5e9, #0284c7) !important;
-      box-shadow: 0 5px 16px rgba(14,165,233,0.5) !important;
-    }
-    </style>
-    """, unsafe_allow_html=True)
-
     # Row 1: 2 cards
     c1, c2 = st.columns(2)
     for col, card in zip([c1, c2], ROW1):
         with col:
             st.markdown(card_html(card), unsafe_allow_html=True)
-            st.markdown('<div class="home-btn"></div>', unsafe_allow_html=True)
             if st.button(card["btn"], key=f"nav_{card['page']}", use_container_width=True):
                 st.session_state.page = card["page"]
                 st.rerun()
@@ -178,7 +160,6 @@ def page_home():
     for col, card in zip([c1, c2, c3], ROW2):
         with col:
             st.markdown(card_html(card), unsafe_allow_html=True)
-            st.markdown('<div class="home-btn"></div>', unsafe_allow_html=True)
             if st.button(card["btn"], key=f"nav_{card['page']}", use_container_width=True):
                 st.session_state.page = card["page"]
                 st.rerun()
